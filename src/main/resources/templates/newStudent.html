@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title}">Student</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<nav th:replace="fragments/navbar :: navbar"></nav>
+<main>
+    <h1 th:text="${title}">Add new student</h1>
+    <form th:action="@{/students/{link}(link=${action})}">
+        <select name="faculty" onchange="this.form.submit();">
+            <option disabled selected>Please choose a faculty</option>
+            <option th:each="faculty : ${faculties}" th:value="${faculty.abbreviation}"
+                    th:text="${faculty.abbreviation + ' - ' + faculty.name}"
+                    th:selected="${param.faculty != null && param.faculty[0] == faculty.abbreviation}"></option>
+        </select>
+    </form>
+    <form th:action="@{/students/{link}(link=${action})}" th:if="${specialties != null && !specialties.isEmpty()}">
+        <select name="specialty" onchange="this.form.submit();">
+            <option disabled selected>Please choose a specialty</option>
+            <option th:each="specialty : ${specialties}" th:value="${specialty.id}"
+                    th:text="${specialty.id + ' - ' + specialty.name}"
+                    th:selected="${param.specialty != null && param.specialty[0] == specialty.id.toString()}"></option>
+        </select>
+        <input type="hidden" name="faculty" th:value="${param.faculty[0]}">
+    </form>
+    <hr>
+    <div class="input-form" th:if="${groups != null}">
+        <div class="labels">
+            <p>Name and Surname:</p>
+            <p>Email:</p>
+            <p>Group:</p>
+            <p>Phone:</p>
+            <p>Birthdate:</p>
+        </div>
+        <form th:action="@{/students/new}" th:object="${student}" method="post">
+            <input type="text" th:field="*{name}" required>
+            <input type="email" th:field="*{email}" required>
+            <select th:field="*{group.name}">
+                <option th:each="group : ${groups}" th:value="${group.name}" th:text="${group.name}"></option>
+            </select>
+            <input type="tel" th:field="*{phone}" required pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="099-999-9999">
+            <input type="date" th:field="*{birthdate}" min="1940-01-01" max="2008-01-01" required>
+            <input type="hidden" th:field="*{id}">
+            <input type="submit" name="action" th:value="${title}">
+        </form>
+    </div>
+</main>
+</body>
+</html>

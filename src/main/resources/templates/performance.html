@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${student.name}">Student</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<nav th:replace="fragments/navbar :: navbar"></nav>
+<main>
+    <h1 th:text="${student.name}"></h1>
+    <div class="info-block">
+        <table class="info">
+            <tr>
+                <td><p><b>Email: </b><th:block th:text="${student.email}" /></td>
+                <td><p><b>Phone: </b><th:block th:text="${student.phone}" /></td>
+            </tr>
+            <tr>
+                <td><p><b>Group: </b><a th:text="${student.group.name}" th:href="@{'/groups/' + ${student.group.name}}"></a></td>
+                <td><p><b>Birthdate: </b><th:block th:text="${student.birthdate}" /></td>
+            </tr>
+        </table>
+        <a th:href="@{/students/edit/{id}(id=${student.id})}" class="edit">Edit personal data</a>
+    </div>
+    <form th:action="@{/students/{id}(id=${student.id})}" class="semesters">
+        <label><input type="checkbox" name="first" th:checked="${param.first != null && param.first[0] == 'on'}" onclick="this.form.submit();">1 semester</label>
+        <label><input type="checkbox" name="second" th:checked="${param.second != null && param.second[0] == 'on'}" onclick="this.form.submit();">2 semester</label>
+    </form>
+    <table>
+        <tr>
+            <th>Subject</th>
+            <th>Mark</th>
+            <th>Semester</th>
+        </tr>
+        <tr th:each="mark : ${marks}" th:attrappend="style=${mark.score < 60}?'background-color: #ffa99d'">
+            <td th:text="${mark.subject.name}">Subject</td>
+            <td th:text="${mark.score}">Mark</td>
+            <td th:text="${mark.semester}">Semester</td>
+        </tr>
+    </table>
+</main>
+</body>
+</html>

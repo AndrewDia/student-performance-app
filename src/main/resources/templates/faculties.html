@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Faculties</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<nav th:replace="fragments/navbar :: navbar"></nav>
+<main>
+    <h1>List of faculties</h1>
+    <div class="flexible">
+        <div class="inner-first">
+            <table>
+                <tr>
+                    <th>Abbreviation</th>
+                    <th>Name</th>
+                    <th>Dean</th>
+                </tr>
+                <tr th:each="faculty : ${faculties}" style="cursor: pointer"
+                    th:abbreviation="${faculty.abbreviation}" onclick="rowClicked(this.getAttribute('abbreviation'))"
+                    th:attrappend="style=${pathFaculty != null && pathFaculty.abbreviation.equals(faculty.abbreviation)}?'; background-color: #c9e3ff'">
+                    <td th:text="${faculty.abbreviation}">Abbreviation</td>
+                    <td th:text="${faculty.name}">Name</td>
+                    <td th:text="${faculty.dean.name}">Dean</td>
+                </tr>
+            </table>
+        </div>
+        <div class="inner-choose" th:if="${pathFaculty == null}">
+            <h5>Choose a faculty<br>to see additional information</h5>
+        </div>
+        <div class="inner-second" th:unless="${pathFaculty == null}">
+            <div>
+                <h3>Groups:</h3>
+                <th:block th:each="group : ${pathFaculty.groups}">
+                    <nobr><a th:href="@{'/groups/' + ${group.name}}" th:text="${group.name + '&emsp;'}"></a></nobr>
+                </th:block>
+                <br>
+                <h3>Specialties:</h3>
+                <th:block th:each="specialty : ${specialties}">
+                    <th:block th:text="${specialty.id}" />
+                </th:block>
+            </div>
+        </div>
+    </div>
+</main>
+<script>
+    function rowClicked(value) {
+        location.href = "/faculties/" + value;
+    }
+</script>
+</body>
+</html>

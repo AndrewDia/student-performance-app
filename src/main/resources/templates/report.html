@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title}">Report</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<nav th:replace="fragments/navbar :: navbar"></nav>
+<main>
+    <h1 th:text="${title}">Students report</h1>
+    <form action="report" class="report">
+        <input type="submit" name="list" value="Honor Roll" style="background-color: #c9e3ff ">
+        <input type="submit" name="list" value="F-students" style="background-color: #ffa99d">
+    </form>
+    <table th:replace="fragments/students :: students"></table>
+</main>
+</body>
+</html>

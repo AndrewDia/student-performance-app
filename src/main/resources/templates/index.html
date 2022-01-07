@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Students</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<nav th:replace="fragments/navbar :: navbar"></nav>
+<main>
+    <h1>List of students</h1>
+    <div class="flexible">
+        <form class="search" action="/" method="post">
+            <input type="text" name="search" placeholder="Enter name, phone or email" required>
+            <input type="submit" value="Search">
+        </form>
+        <a th:href="@{/students/new}" class="create">Add new student</a>
+    </div>
+    <table th:replace="fragments/students :: students"></table>
+    <div class="cancel">
+        <form th:if="${afterSearch}" th:action="@{/}">
+            <input type="submit" value="Cancel">
+        </form>
+    </div>
+</main>
+<!--<div class="success">Student was deleted</div>-->
+</body>
+</html>

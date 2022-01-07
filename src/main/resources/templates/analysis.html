@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Session Analysis</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<nav th:replace="fragments/navbar :: navbar"></nav>
+<main>
+    <h1>Session Analysis</h1>
+    <hr>
+    <div class="flexible">
+        <form th:action="@{/analysis}">
+            <p class="choose-label">Semester</p>
+            <select name="semester" onchange="this.form.submit();">
+                <option disabled selected>Choose a semester</option>
+                <option th:selected="${param.semester != null && param.semester[0] == '1'}">1</option>
+                <option th:selected="${param.semester != null && param.semester[0] == '2'}">2</option>
+            </select>
+        </form>
+        <form th:action="@{/analysis}">
+            <p class="choose-label">Specialty</p>
+            <select name="specialty" onchange="this.form.submit();">
+                <option disabled selected>Choose a specialty</option>
+                <option th:each="specialty : ${specialties}" th:value="${specialty.id}"
+                        th:text="${specialty.id + ' - ' + specialty.name}"
+                        th:selected="${param.specialty != null && param.specialty[0] == specialty.id.toString()}"></option>
+            </select>
+        </form>
+        <form th:action="@{/analysis}">
+            <p class="choose-label">Faculty</p>
+            <select name="faculty" onchange="this.form.submit();">
+                <option disabled selected>Choose a faculty</option>
+                <option th:each="faculty : ${faculties}" th:value="${faculty.abbreviation}"
+                        th:text="${faculty.abbreviation + ' - ' + faculty.name}"
+                        th:selected="${param.faculty != null && param.faculty[0] == faculty.abbreviation}">
+                </option>
+            </select>
+        </form>
+    </div>
+    <hr>
+    <table style="margin-top: 1.5em">
+        <tr>
+            <th>Subject</th>
+            <th>Average mark</th>
+        </tr>
+        <tr th:each="subject : ${subjects}">
+            <td th:text="${subject.key}"></td>
+            <td th:text="${subject.value}"></td>
+        </tr>
+    </table>
+</main>
+</body>
+</html>

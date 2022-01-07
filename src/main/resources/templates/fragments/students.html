@@ -1,0 +1,28 @@
+<table th:fragment="students">
+    <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Group</th>
+        <th>Birthdate</th>
+        <th></th>
+    </tr>
+    <tr th:each="student : ${students}" style="cursor: pointer"
+        th:student="${student.id}" onclick="rowClicked(this.getAttribute('student'))">
+        <td th:text="${student.name}">Name</td>
+        <td th:text="${student.email}">e-mail</td>
+        <td th:text="${student.phone}">Phone</td>
+        <td th:text="${student.group.name}">Group</td>
+        <td th:text="${student.birthdate}">Birthdate</td>
+        <td>
+            <form th:action="@{/students/{id}(id=${student.id})}" method="post">
+                <input type="submit" value="&#10060;" class="delete_button">
+            </form>
+        </td>
+    </tr>
+    <script>
+        function rowClicked(value) {
+            location.href = "/students/" + value;
+        }
+    </script>
+</table>

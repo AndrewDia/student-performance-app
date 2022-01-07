@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${group.name}">Group</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<nav th:replace="fragments/navbar :: navbar"></nav>
+<main>
+    <h1>Group: <b th:text="${group.name}"></b> (<th:block th:text="${group.course}" /> course)</h1>
+    <p><b>Curator: </b><th:block th:text="${group.curator.name}" />
+    <p><b>Specialty: </b><th:block th:text="${group.specialty.id + ' ' + group.specialty.name}"  />
+    <p><b>Faculty: </b><th:block th:text="${group.faculty.abbreviation + ' (' + group.faculty.name}" />)
+    <p style="color: red"><i><b>Pay Attention:</b>
+        If you delete students from the table, they will be removed not only from the group but from the whole database</i></p>
+    <table>
+        <tr>
+            <th>№</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Birthdate</th>
+            <th></th>
+        </tr>
+        <tr th:each="student, state : ${students}" style="cursor: pointer"
+            th:student="${student.id}" onclick="rowClicked(this.getAttribute('student'))">
+            <td th:text="${state.count}">№</td>
+            <td th:text="${student.name}">Name</td>
+            <td th:text="${student.email}">e-mail</td>
+            <td th:text="${student.phone}">Phone</td>
+            <td th:text="${student.birthdate}">Birthdate</td>
+            <td>
+                <form th:action="@{/students/{id}(id=${student.id})}" th:method="delete">
+                    <input type="submit" value="&#10060;" class="delete_button">
+                </form>
+            </td>
+        </tr>
+    </table>
+</main>
+<script>
+    function rowClicked(value) {
+        location.href = "/students/" + value;
+    }
+</script>
+</body>
+</html>
